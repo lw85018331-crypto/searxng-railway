@@ -1,0 +1,36 @@
+use_default_settings: true
+
+general:
+  instance_name: "lgbd-searxng"
+  debug: false
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  # 已随机生成（64 位 hex），可自行更换
+  secret_key: "86dafeb713fe93a755950932fe0566b0f4425cd74c4f0091c3fa585694f9f56c"
+  # 私有实例，不需要内置限流器（限流器还要额外 Valkey，会拖慢首启）
+  limiter: false
+  public_instance: false
+  image_proxy: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "auto"
+  # 关键：必须开启 json，MCP / 大模型才能读取结果
+  formats:
+    - html
+    - json
+
+ui:
+  static_use_hash: true
+
+outgoing:
+  # Railway 是数据中心 IP，Google/Bing 容易 CAPTCHA。
+  # 超时调低，避免单个坏引擎把整次请求拖死。
+  request_timeout: 6.0
+  max_request_timeout: 12.0
+  pool_connections: 100
+  pool_maxsize: 20
+  max_redirects: 5
